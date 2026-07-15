@@ -149,7 +149,7 @@ function planFor(ref){
 const pv = (plan, f) => (plan.edits.find(e=>e[0]===f) || [,""])[1];
 function setIf(plan, f){ const v = pv(plan, f); if(v) setVal(f, v); }
 
-const S012_QUERY = "Photo attached to S012 does not correspond to the recorded component (tile adhesive to bathroom wall); it appears to be from a different location. Please confirm the component and re-attach the correct photo.";
+const S012_QUERY = "Photo attached to S012 shows a tiled floor and does not correspond to this record (tile adhesive to bathroom wall). Please re-attach the correct photo for S012.";
 function dEmail(q){ return `On 02/12/2025 08:14, cherries@thetestinglab.eu wrote:
 > Darren Surveyor,
 > Please respond to EVERY query within the [] below that query. Do not change the subject or remove text from the email.
@@ -166,7 +166,7 @@ function drEmail(q){ return `On 02/12/2025 09:02, darren.reynolds@thetestinglab.
 > InternalRef:[0000412]
 > Assessment #S012 Bathroom/Walls Internal/Tile Adhesive
 > Q: ${q}
-> R: [Component correct - tile adhesive to bathroom wall. Correct photo re-attached, apologies.]
+> R: [Correct photo re-attached for S012, apologies. Component is correct as recorded.]
 >
 > Neil Barratt`; }
 
@@ -464,7 +464,7 @@ const END = [
                                  Object.assign(RECORDS.S005, S005_END); tickRow("S005"); loadRecord("S005"); },
   /* after B4 clr+q  */ () => { PHOTO_FIXED.S010=true; ["S006","S009","S010"].forEach(r=>tickRow(r));
                                  Object.assign(RECORDS.S013, S013_END); tickRow("S013");
-                                 loadRecord("S012"); tickRow("S012", true);
+                                 loadRecord("S012"); $("#phImg").src="assets/photo_s003.png"; tickRow("S012", true);
                                  msgAddRow("D","Paul Rigby","darren.reynolds@thetestinglab.eu","J316332 ONG-D01-013 Ongo Homes", true);
                                  msgShow("D","J316332 ONG-D01-013 Ongo Homes", dEmail(S012_QUERY));
                                  switchTab("tabMessages"); setNotif(0);
@@ -665,13 +665,12 @@ const BEATS = [
    .at(1300, ()=>cursorToEl($("#btnSave")))
    .at(700, ()=>{ pressBtn($("#btnSave")); tickRow("S013"); })
    .at(0, ()=>agentSay("Saved &mdash; the record now matches the lab. No surveyor query needed", "s3.4.3"))
-   /* S012 — a genuine question the lab CANNOT settle: the photo does not correspond to the record */
-   .at(1700, ()=>{ clickFx(); loadRecord("S012"); })
-   .at(0, ()=>agentSay("Record S012 &mdash; tile adhesive to bathroom wall", "s3.3.2"))
-   .at(1200, ()=>cursorToEl($("#phImg"), 0, -10))
-   .at(1500, ()=>cursorToEl(fEl("Component"), 0, 0, 800))
-   .at(900, ()=>{ fEl("Component").classList.add("bad"); })
-   .at(0, ()=>agentSay("<b>MISMATCH</b> &mdash; the attached photo does not correspond to the recorded component", "s3.3.2"))
+   /* S012 — a genuine question the lab CANNOT settle: the wrong photo is attached (record is correct) */
+   .at(1700, ()=>{ clickFx(); loadRecord("S012"); $("#phImg").src="assets/photo_s003.png"; })
+   .at(0, ()=>agentSay("Record S012 &mdash; tile adhesive to bathroom wall. Checking the photo against the record", "s3.3.2"))
+   .at(1300, ()=>cursorToEl($("#phImg"), 0, -10))
+   .at(1700, ()=>cursorToEl($("#phImg"), 40, 40, 900))
+   .at(0, ()=>agentSay("<b>MISMATCH</b> &mdash; this photo shows a tiled floor, not the bathroom wall this record describes", "s3.3.2"))
    .at(1400, ()=>cursorToEl($("#btnRaiseQuery")))
    .at(800, ()=>{ pressBtn($("#btnRaiseQuery")); show($("#dlgQuery")); })
    .at(0, ()=>agentSay("This the lab cannot settle &mdash; raising a <b>D-type query</b> to the surveyor", "s5.3"))
@@ -682,7 +681,7 @@ const BEATS = [
    .at(500, ()=>{ clickFx();
         const cps = Math.max(6, Math.min(26, 4200/S012_QUERY.length));
         typeInto(my, $("#qText"), S012_QUERY, cps, ()=>{ $("#qgLive").textContent=S012_QUERY; }); })
-   .at(300, ()=>agentSay("Writing the query &mdash; asking the surveyor to confirm the photo and component", "s5.3"))
+   .at(300, ()=>agentSay("Writing the query &mdash; the record is right, the photo is wrong. Asking the surveyor to re-attach it", "s5.3"))
    .at(4900, ()=>cursorToEl($("#btnQueryOk"), 0, 0, 800))
    .at(1050, ()=>{ pressBtn($("#btnQueryOk")); hide($("#dlgQuery"));
         const r=$("#asm_S012"); r.classList.add("qpend"); r.querySelector(".tick").textContent="?"; })
@@ -712,11 +711,11 @@ const BEATS = [
         msgAddRow("DR","darren.reynolds@thetestinglab.eu","Paul Rigby","Re: J316332 ONG-D01-013 Ongo Homes", true);
         msgShow("DR","Re: J316332 ONG-D01-013 Ongo Homes", drEmail(S012_QUERY)); setNotif(0); })
    .at(2800, ()=>cursorToEl($("#tabAsbestos")))
-   .at(700, ()=>{ clickFx(); switchTab("tabAsbestos"); loadRecord("S012"); })
-   .at(0, ()=>agentSay("Surveyor confirmed the component and re-attached the correct photo", "s5.7"))
-   .at(1200, ()=>cursorToEl(fEl("Component"), 0, 0, 800))
-   .at(800, ()=>{ fEl("Component").classList.remove("bad"); flashOk("Component"); })
-   .at(1600, ()=>cursorToEl($("#btnSave")))
+   .at(700, ()=>{ clickFx(); switchTab("tabAsbestos"); loadRecord("S012"); $("#phImg").src="assets/photo_s003.png"; })
+   .at(0, ()=>agentSay("Surveyor re-attached the correct photo &mdash; the record was right, only the image was wrong", "s5.7"))
+   .at(1300, ()=>cursorToEl($("#phImg"), 0, -10))
+   .at(900, ()=>{ $("#phImg").src="assets/photo_s012.png"; })
+   .at(1400, ()=>cursorToEl($("#btnSave")))
    .at(700, ()=>pressBtn($("#btnSave")))
    .at(0, ()=>agentSay("Saved &mdash; status back to Survey Report Received", "s5.10"))
    .at(400, ()=>{ const r=$("#asm_S012"); r.classList.remove("flag"); r.querySelector(".tick").textContent="✓"; r.classList.add("done");
