@@ -149,12 +149,13 @@ function planFor(ref){
 const pv = (plan, f) => (plan.edits.find(e=>e[0]===f) || [,""])[1];
 function setIf(plan, f){ const v = pv(plan, f); if(v) setVal(f, v); }
 
+const S012_QUERY = "Photo attached to S012 does not correspond to the recorded component (tile adhesive to bathroom wall); it appears to be from a different location. Please confirm the component and re-attach the correct photo.";
 function dEmail(q){ return `On 02/12/2025 08:14, cherries@thetestinglab.eu wrote:
 > Darren Surveyor,
 > Please respond to EVERY query within the [] below that query. Do not change the subject or remove text from the email.
 >
 > InternalRef:[0000412]
-> Assessment #S013 Bathroom/Ceiling/Textured Coating To Ceiling
+> Assessment #S012 Bathroom/Walls Internal/Tile Adhesive
 > Q: ${q}
 > R: []
 >
@@ -163,9 +164,9 @@ function dEmail(q){ return `On 02/12/2025 08:14, cherries@thetestinglab.eu wrote
 > The Testing Lab PLC`; }
 function drEmail(q){ return `On 02/12/2025 09:02, darren.reynolds@thetestinglab.eu wrote:
 > InternalRef:[0000412]
-> Assessment #S013 Bathroom/Ceiling/Textured Coating To Ceiling
+> Assessment #S012 Bathroom/Walls Internal/Tile Adhesive
 > Q: ${q}
-> R: [Cert correct - NADIS. Selected on handheld in error, apologies.]
+> R: [Component correct - tile adhesive to bathroom wall. Correct photo re-attached, apologies.]
 >
 > Neil Barratt`; }
 
@@ -461,18 +462,18 @@ const END = [
   /* after B2 scope   */ () => { docPlan().forEach(applyDocFix); switchTab("tabAsbestos"); switchSub("stAssessments"); },
   /* after B3 S005    */ () => { ["S001","S002","S003","S004"].forEach(r=>tickRow(r));
                                  Object.assign(RECORDS.S005, S005_END); tickRow("S005"); loadRecord("S005"); },
-  /* after B4 S013 q  */ () => { PHOTO_FIXED.S010=true; ["S006","S009","S010","S012"].forEach(r=>tickRow(r));
-                                 loadRecord("S013"); tickRow("S013", true);
+  /* after B4 clr+q  */ () => { PHOTO_FIXED.S010=true; ["S006","S009","S010"].forEach(r=>tickRow(r));
+                                 Object.assign(RECORDS.S013, S013_END); tickRow("S013");
+                                 loadRecord("S012"); tickRow("S012", true);
                                  msgAddRow("D","Paul Rigby","darren.reynolds@thetestinglab.eu","J316332 ONG-D01-013 Ongo Homes", true);
-                                 msgShow("D","J316332 ONG-D01-013 Ongo Homes", dEmail(planFor("S013").query));
+                                 msgShow("D","J316332 ONG-D01-013 Ongo Homes", dEmail(S012_QUERY));
                                  switchTab("tabMessages"); setNotif(0);
                                  setStatus("Data Check Rejected","pink"); },
-  /* after B5 reply   */ () => { const q=planFor("S013").query; Object.assign(RECORDS.S013, S013_END);
-                                 msgAddRow("DR","darren.reynolds@thetestinglab.eu","Paul Rigby","Re: J316332 ONG-D01-013 Ongo Homes", true);
-                                 msgShow("DR","Re: J316332 ONG-D01-013 Ongo Homes", drEmail(q));
-                                 const r=$("#asm_S013"); r.classList.remove("flag"); r.querySelector(".tick").textContent="✓"; r.classList.add("done");
+  /* after B5 reply   */ () => { msgAddRow("DR","darren.reynolds@thetestinglab.eu","Paul Rigby","Re: J316332 ONG-D01-013 Ongo Homes", true);
+                                 msgShow("DR","Re: J316332 ONG-D01-013 Ongo Homes", drEmail(S012_QUERY));
+                                 const r=$("#asm_S012"); r.classList.remove("flag"); r.querySelector(".tick").textContent="✓"; r.classList.add("done");
                                  switchTab("tabAsbestos"); switchSub("stAssessments");
-                                 loadRecord("S013"); setStatus("Survey Report Received","pink"); setNotif(0); },
+                                 loadRecord("S012"); setStatus("Survey Report Received","pink"); setNotif(0); },
   /* after B6 drawing */ () => { $("#drwS003").classList.add("on"); $("#drwS009").classList.add("on");
                                  switchTab("tabAsbestos"); switchSub("stAssessments"); },
   /* after B6 dcheck  */ () => { ["S014","S015","S016","S017"].forEach(r=>tickRow(r)); tickRow("S018");
@@ -637,9 +638,8 @@ const BEATS = [
    .at(0, ()=>agentSay("Rotating the photo upright &mdash; keeping the original as the hash copy", "s3.3.1"))
    .at(2300, ()=>flashOk("Component"))                     // hold on the corrected photo
    .at(1400, ()=>tickRow("S010"));
-  quickPass(s, ["S012"], 900);
-  s.at(700, ()=>{ clickFx(); loadRecord("S013"); plan=planFor("S013"); })
-   .at(0, ()=>agentSay("Opening record S013 &mdash; floor tiles &amp; bitumen", "s3.4"))
+  s.at(900, ()=>{ clickFx(); loadRecord("S013"); })
+   .at(0, ()=>agentSay("Opening record S013 &mdash; textured coating to ceiling", "s3.4"))
    .at(1200, ()=>cursorToEl($("#btnViewCert")))
    .at(700, ()=>{ clickFx(); show($("#winCert")); })
    .at(800, ()=>cursorToEl($("#certS013")))
@@ -653,21 +653,39 @@ const BEATS = [
    .at(1000, ()=>cursorToEl(fEl("Asbestos Type"), 0, 0, 700))
    .at(1000, ()=>{ fEl("Asbestos Type").classList.add("bad"); })
    .at(0, ()=>agentSay("<b>CONFLICT</b> &mdash; record says Chrysotile, certificate says NADIS", "s3.4.2"))
+   /* Clear Discrepancy — the lab certificate is the authority on the result (MQP121 App. I) */
+   .at(0, ()=>agentSay("The certificate is the authority on the result &mdash; this is a reconciliation, not a query", "App. I"))
+   .at(1400, ()=>cursorToEl(fEl("Asbestos Type"), 60, 0))
+   .at(700, ()=>{ clickFx(); dropdown(my, "Asbestos Type",
+        ["Amosite","Chrysotile","Crocidolite","NADIS","No Access","Non Suspect Material"],
+        "NADIS", ()=>{ fEl("Asbestos Type").classList.remove("bad"); }); })
+   .at(300, ()=>agentSay("Clearing the discrepancy &mdash; updating S013 to <b>NADIS</b> to match the certificate", "App. I"))
+   .at(2000, ()=>{ Object.assign(RECORDS.S013, S013_END); })
+   .at(400, ()=>agentSay("Action was already &lsquo;No Further Action&rsquo; &mdash; consistent with NADIS, not Chrysotile", "s3.4.3"))
+   .at(1300, ()=>cursorToEl($("#btnSave")))
+   .at(700, ()=>{ pressBtn($("#btnSave")); tickRow("S013"); })
+   .at(0, ()=>agentSay("Saved &mdash; the record now matches the lab. No surveyor query needed", "s3.4.3"))
+   /* S012 — a genuine question the lab CANNOT settle: the photo does not correspond to the record */
+   .at(1700, ()=>{ clickFx(); loadRecord("S012"); })
+   .at(0, ()=>agentSay("Record S012 &mdash; tile adhesive to bathroom wall", "s3.3.2"))
+   .at(1200, ()=>cursorToEl($("#phImg"), 0, -10))
+   .at(1500, ()=>cursorToEl(fEl("Component"), 0, 0, 800))
+   .at(900, ()=>{ fEl("Component").classList.add("bad"); })
+   .at(0, ()=>agentSay("<b>MISMATCH</b> &mdash; the attached photo does not correspond to the recorded component", "s3.3.2"))
    .at(1400, ()=>cursorToEl($("#btnRaiseQuery")))
    .at(800, ()=>{ pressBtn($("#btnRaiseQuery")); show($("#dlgQuery")); })
-   .at(0, ()=>agentSay("It does not guess &mdash; raising a <b>D-type query</b> to the surveyor", "s5.3"))
+   .at(0, ()=>agentSay("This the lab cannot settle &mdash; raising a <b>D-type query</b> to the surveyor", "s5.3"))
    .at(900, ()=>cursorToEl($("#btnAddRejection")))
    .at(700, ()=>{ clickFx();
         $("#qgBody").innerHTML=`<tr><td>DATA</td><td>1</td><td>02/12/2025 08:14</td><td id="qgLive"></td><td></td></tr>`; })
    .at(600, ()=>cursorToEl($("#qText")))
    .at(500, ()=>{ clickFx();
-        const cps = Math.max(6, Math.min(26, 4200/plan.query.length));   // finish typing before Ok, whatever Claude wrote
-        typeInto(my, $("#qText"), plan.query, cps, ()=>{ $("#qgLive").textContent=plan.query; }); })
-   .at(300, ()=>agentSay("Writing the query &mdash; asking the surveyor to confirm the result", "s5.3"))
+        const cps = Math.max(6, Math.min(26, 4200/S012_QUERY.length));
+        typeInto(my, $("#qText"), S012_QUERY, cps, ()=>{ $("#qgLive").textContent=S012_QUERY; }); })
+   .at(300, ()=>agentSay("Writing the query &mdash; asking the surveyor to confirm the photo and component", "s5.3"))
    .at(4900, ()=>cursorToEl($("#btnQueryOk"), 0, 0, 800))
-   .at(1050, ()=>{ pressBtn($("#btnQueryOk")); hide($("#dlgQuery"));   // query SAVED to the record — not yet sent
-        const r=$("#asm_S013"); r.classList.add("qpend"); r.querySelector(".tick").textContent="?"; })
-   /* the email only goes out when Data Check is pressed and confirmed (MQP121 s5.6) */
+   .at(1050, ()=>{ pressBtn($("#btnQueryOk")); hide($("#dlgQuery"));
+        const r=$("#asm_S012"); r.classList.add("qpend"); r.querySelector(".tick").textContent="?"; })
    .at(0, ()=>agentSay("Query saved. The email only sends when Data Check is pressed", "s5.6"))
    .at(1100, ()=>cursorToEl($("#btnDataCheck")))
    .at(800, ()=>{ pressBtn($("#btnDataCheck"));
@@ -675,11 +693,11 @@ const BEATS = [
    .at(1100, ()=>cursorToEl($("#btnConfirmYes")))
    .at(0, ()=>agentSay("Confirming &mdash; the D-type query goes to the surveyor. Status &rarr; <b>Data Check Rejected</b>", "s5.6"))
    .at(800, ()=>{ clickFx(); hide($("#dlgConfirm"));
-        switchTab("tabMessages");                               // email sent invisibly; recorded in Messages
+        switchTab("tabMessages");
         msgAddRow("D","Paul Rigby","darren.reynolds@thetestinglab.eu","J316332 ONG-D01-013 Ongo Homes", true);
-        msgShow("D","J316332 ONG-D01-013 Ongo Homes", dEmail(plan.query));
+        msgShow("D","J316332 ONG-D01-013 Ongo Homes", dEmail(S012_QUERY));
         setStatus("Data Check Rejected","pink");
-        const r=$("#asm_S013"); r.classList.remove("qpend"); r.classList.add("flag"); r.querySelector(".tick").textContent="!"; })
+        const r=$("#asm_S012"); r.classList.remove("qpend"); r.classList.add("flag"); r.querySelector(".tick").textContent="!"; })
    .at(1800, ()=>{});
   return s;
 }},
@@ -690,20 +708,18 @@ const BEATS = [
   agentSay("Surveyor&rsquo;s reply has landed in the inbox", "s5.7");
   s.at(1000, ()=>setNotif(1))
    .at(900, ()=>cursorToEl($("#btnNotif")))
-   .at(800, ()=>{ clickFx(); const q=planFor("S013").query;
+   .at(800, ()=>{ clickFx();
         msgAddRow("DR","darren.reynolds@thetestinglab.eu","Paul Rigby","Re: J316332 ONG-D01-013 Ongo Homes", true);
-        msgShow("DR","Re: J316332 ONG-D01-013 Ongo Homes", drEmail(q)); setNotif(0); })
+        msgShow("DR","Re: J316332 ONG-D01-013 Ongo Homes", drEmail(S012_QUERY)); setNotif(0); })
    .at(2800, ()=>cursorToEl($("#tabAsbestos")))
-   .at(700, ()=>{ clickFx(); switchTab("tabAsbestos"); loadRecord("S013"); })
-   .at(0, ()=>agentSay("Cert confirmed as NADIS &mdash; correcting S013, re-running the cascade", "s3.4.3"))
-   .at(800, ()=>cursorToEl(fEl("Asbestos Type"), 60, 0))
-   .at(600, ()=>{ clickFx(); dropdown(my, "Asbestos Type",
-        ["Amosite","Chrysotile","Crocidolite","NADIS","No Access","Non Suspect Material"],
-        "NADIS", ()=>{ Object.assign(RECORDS.S013, S013_END); }); })
-   .at(2400, ()=>cursorToEl($("#btnSave")))
+   .at(700, ()=>{ clickFx(); switchTab("tabAsbestos"); loadRecord("S012"); })
+   .at(0, ()=>agentSay("Surveyor confirmed the component and re-attached the correct photo", "s5.7"))
+   .at(1200, ()=>cursorToEl(fEl("Component"), 0, 0, 800))
+   .at(800, ()=>{ fEl("Component").classList.remove("bad"); flashOk("Component"); })
+   .at(1600, ()=>cursorToEl($("#btnSave")))
    .at(700, ()=>pressBtn($("#btnSave")))
    .at(0, ()=>agentSay("Saved &mdash; status back to Survey Report Received", "s5.10"))
-   .at(400, ()=>{ const r=$("#asm_S013"); r.classList.remove("flag"); r.querySelector(".tick").textContent="✓"; r.classList.add("done");
+   .at(400, ()=>{ const r=$("#asm_S012"); r.classList.remove("flag"); r.querySelector(".tick").textContent="✓"; r.classList.add("done");
         setStatus("Survey Report Received","pink"); });
   return s;
 }},
@@ -711,7 +727,7 @@ const BEATS = [
 /* B6 — the drawing check (MQP121 s3.10: rooms, orientation, labels; positives marked red) */
 { id:"drawing", build(my){
   const s=seq();
-  agentSay("Opening the China drawing &mdash; matching rooms to the report", "s3.10");
+  agentSay("Opening the China drawing &mdash; red hatch marks lab-confirmed positives only", "s3.10.2");
   s.at(800, ()=>cursorToEl($("#tabDrawing")))
    .at(700, ()=>{ clickFx(); switchTab("tabDrawing"); })
    /* walk the rooms against the report: living room → kitchen → hallway → extension */
@@ -722,10 +738,10 @@ const BEATS = [
    /* the two positives (S003, S009 — chrysotile on the cert) get their red hatching */
    .at(1300, ()=>cursorToEl($("#drwS003")))
    .at(700, ()=>{ clickFx(); $("#drwS003").classList.add("on"); })
-   .at(0, ()=>agentSay("Marking S003 in red &mdash; positive ACM (floor tiles)", "s3.10.2"))
+   .at(0, ()=>agentSay("S003 &mdash; certificate confirms Chrysotile, so it gets red hatching", "s3.10.2"))
    .at(900, ()=>cursorToEl($("#drwS009")))
    .at(700, ()=>{ clickFx(); $("#drwS009").classList.add("on"); })
-   .at(0, ()=>agentSay("Marking S009 in red &mdash; positive ACM (cement flue)", "s3.10.2"))
+   .at(0, ()=>agentSay("S009 &mdash; Chrysotile confirmed, red hatching. S013 came back NADIS &mdash; it gets no mark", "s3.10.2"))
    .at(1400, ()=>cursorToEl($("#tabAsbestos")))
    .at(700, ()=>{ clickFx(); switchTab("tabAsbestos"); });
   return s;
