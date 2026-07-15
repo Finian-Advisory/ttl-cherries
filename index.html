@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Survey Manager Software V2.39c</title>
+<link rel="stylesheet" href="style.css?v=20260715101829">
+</head>
+<body>
+
+<!-- SVG icon defs -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-cherry"><circle cx="6" cy="11" r="4.5" fill="#c8102e"/><circle cx="11.5" cy="12" r="4" fill="#e03a4e"/><path d="M6 7 Q8 2 13 2 M11.5 8 Q11 3 13 2" stroke="#2c7a2c" stroke-width="1.4" fill="none"/></g>
+    <g id="i-people"><circle cx="8" cy="7" r="3.4" fill="#e8a33d"/><path d="M2.5 19c0-4 2.5-6.4 5.5-6.4s5.5 2.4 5.5 6.4z" fill="#3f6fb5"/><circle cx="15.5" cy="8" r="2.8" fill="#e8a33d"/><path d="M12.5 18.6c.4-3.4 2-5.2 4.3-5.2 1.9 0 3.6 1.7 3.9 5.2z" fill="#7aa03c"/></g>
+    <g id="i-calc"><rect x="3" y="2" width="16" height="19" rx="1.5" fill="#4f7dbb"/><rect x="5" y="4" width="12" height="4" fill="#dff0ff"/><g fill="#dfe8f5"><rect x="5" y="10" width="3" height="3"/><rect x="9.5" y="10" width="3" height="3"/><rect x="14" y="10" width="3" height="3"/><rect x="5" y="14.5" width="3" height="3"/><rect x="9.5" y="14.5" width="3" height="3"/><rect x="14" y="14.5" width="3" height="3"/></g></g>
+    <g id="i-person"><circle cx="11" cy="7" r="4" fill="#e8a33d"/><path d="M3.5 21c0-5 3.4-7.8 7.5-7.8s7.5 2.8 7.5 7.8z" fill="#3f6fb5"/></g>
+    <g id="i-invoice"><path d="M3 3h11l4 4v13H3z" fill="#fdf6d8" stroke="#b9a24a" stroke-width="1"/><path d="M14 3v4h4" fill="none" stroke="#b9a24a"/><g stroke="#8a8a6a" stroke-width="1.1"><path d="M6 10h10M6 13h10M6 16h7"/></g><circle cx="16" cy="17.5" r="3.4" fill="#e8bb2d" stroke="#a8811a"/></g>
+    <g id="i-cal"><rect x="2.5" y="4" width="17" height="16" rx="1.5" fill="#fff" stroke="#98a6bb"/><rect x="2.5" y="4" width="17" height="4.5" fill="#c8402e"/><rect x="6" y="2" width="2" height="4" rx="1" fill="#5a6a80"/><rect x="14" y="2" width="2" height="4" rx="1" fill="#5a6a80"/><text x="11" y="17" font-size="8.5" font-weight="700" text-anchor="middle" fill="#333" font-family="Segoe UI">12</text></g>
+    <g id="i-mail"><rect x="2" y="4.5" width="18" height="13" rx="1" fill="#c8402e"/><path d="M2 5.5 L11 12.5 L20 5.5" fill="none" stroke="#fff" stroke-width="1.4"/><rect x="4" y="8" width="10" height="8" fill="#fdfdfd" stroke="#999" transform="rotate(-6 9 12)"/></g>
+    <g id="i-tabfold"><path d="M1 4h5l1.5 2H15v8H1z" fill="#f3c04a" stroke="#b98d20" stroke-width=".8"/></g>
+    <g id="i-tablist"><rect x="1.5" y="2" width="12" height="12" fill="#fff" stroke="#8899aa"/><g stroke="#4f7dbb" stroke-width="1.2"><path d="M3.5 5h8M3.5 8h8M3.5 11h8"/></g></g>
+    <g id="i-tabdoc"><path d="M3 1.5h7l3 3V14.5H3z" fill="#fff" stroke="#8899aa"/><g stroke="#99a" stroke-width="1"><path d="M5 6h6M5 8.5h6M5 11h4"/></g></g>
+    <g id="i-tabglobe"><circle cx="8" cy="8" r="6.4" fill="#7db4e0" stroke="#3f6fb5"/><path d="M8 1.6v12.8M1.6 8h12.8M3.3 3.8c2.8 2.1 6.6 2.1 9.4 0M3.3 12.2c2.8-2.1 6.6-2.1 9.4 0" stroke="#3f6fb5" fill="none" stroke-width=".9"/></g>
+    <g id="i-tabwarn"><path d="M8 1.5 15 14H1z" fill="#f7c93d" stroke="#b98d20"/><rect x="7.2" y="5.5" width="1.6" height="4.5" fill="#333"/><rect x="7.2" y="11.2" width="1.6" height="1.6" fill="#333"/></g>
+    <g id="i-tabbeaker"><path d="M5 2h6M6.5 2v4L3 13a1.5 1.5 0 0 0 1.4 2h7.2A1.5 1.5 0 0 0 13 13L9.5 6V2" fill="#cfe6f7" stroke="#4f7dbb" stroke-width="1"/><path d="M4.6 10.5h6.8L13 13a1.5 1.5 0 0 1-1.4 2H4.4A1.5 1.5 0 0 1 3 13z" fill="#4f9dd8"/></g>
+    <g id="i-tabq"><circle cx="8" cy="8" r="6.4" fill="#3f6fb5"/><text x="8" y="11.4" font-size="9.5" font-weight="700" text-anchor="middle" fill="#fff" font-family="Segoe UI">?</text></g>
+    <g id="i-tabhouse"><path d="M2 8.5 8 3l6 5.5" fill="none" stroke="#3a7a3a" stroke-width="1.4"/><path d="M4 8v6h8V8" fill="#dff0d8" stroke="#3a7a3a"/><rect x="6.8" y="10" width="2.4" height="4" fill="#8a5a2a"/></g>
+    <g id="i-tabpencil"><path d="M2 14l1-3.5L11.5 2 14 4.5 5.5 13z" fill="#f3c04a" stroke="#a8811a" stroke-width=".8"/><path d="M11.5 2 14 4.5" stroke="#a8811a"/></g>
+    <g id="i-tabcam"><rect x="1.5" y="4.5" width="13" height="9.5" rx="1.5" fill="#7a8aa0"/><circle cx="8" cy="9.2" r="3" fill="#cfe0f0" stroke="#445"/><rect x="5.5" y="2.8" width="5" height="2.5" fill="#7a8aa0"/></g>
+    <g id="i-tabmsg"><rect x="1" y="3" width="14" height="9" rx="1" fill="#c8402e"/><path d="M1 4 8 9.5 15 4" fill="none" stroke="#fff" stroke-width="1.1"/></g>
+    <g id="i-tabcorr"><rect x="1.5" y="2.5" width="13" height="11" rx="1" fill="#fff" stroke="#8899aa"/><path d="M1.5 4 8 9 14.5 4" fill="none" stroke="#8899aa"/></g>
+    <g id="i-btn-q"><circle cx="9" cy="9" r="8" fill="#3f6fb5"/><text x="9" y="13" font-size="11" font-weight="700" text-anchor="middle" fill="#fff" font-family="Segoe UI">?</text></g>
+    <g id="i-btn-chk"><circle cx="9" cy="9" r="8" fill="#e8a33d"/><path d="M5 9.5 8 12.5 13.5 6" stroke="#fff" stroke-width="2.2" fill="none"/></g>
+    <g id="i-btn-ukas"><circle cx="9" cy="9" r="8" fill="#8a8f98"/><path d="M5 9.5 8 12.5 13.5 6" stroke="#fff" stroke-width="2.2" fill="none"/></g>
+    <g id="i-btn-gear"><circle cx="9" cy="9" r="3" fill="#eee"/><path d="M9 1.8v3M9 13.2v3M1.8 9h3M13.2 9h3M3.9 3.9l2.1 2.1M12 12l2.1 2.1M14.1 3.9 12 6M6 12l-2.1 2.1" stroke="#7a8aa0" stroke-width="2.2"/><circle cx="9" cy="9" r="4.6" fill="none" stroke="#7a8aa0" stroke-width="2.4"/></g>
+    <g id="i-btn-env"><rect x="1" y="4" width="16" height="11" rx="1" fill="#d8dde8" stroke="#7a8aa0"/><path d="M1 5 9 11 17 5" fill="none" stroke="#7a8aa0" stroke-width="1.2"/></g>
+    <g id="i-btn-save"><circle cx="9" cy="9" r="8" fill="#2fa63a"/><path d="M5 9.5 8 12.5 13.5 6" stroke="#fff" stroke-width="2.4" fill="none"/></g>
+    <g id="i-btn-disc"><circle cx="9" cy="9" r="8" fill="#d0402e"/><rect x="4.5" y="7.8" width="9" height="2.4" fill="#fff"/></g>
+    <g id="i-btn-plus"><circle cx="9" cy="9" r="8" fill="#2fa63a"/><path d="M9 4.5v9M4.5 9h9" stroke="#fff" stroke-width="2.4"/></g>
+    <g id="i-btn-x"><circle cx="9" cy="9" r="8" fill="#d0402e"/><path d="M5.5 5.5l7 7M12.5 5.5l-7 7" stroke="#fff" stroke-width="2.2"/></g>
+    <g id="i-btn-lock"><rect x="4" y="8" width="10" height="8" rx="1" fill="#e8bb2d" stroke="#a8811a"/><path d="M6 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="#7a6a2a" stroke-width="1.6"/></g>
+    <g id="i-btn-reset"><path d="M5 5l8 8M13 5l-8 8" stroke="#d0402e" stroke-width="2.4"/></g>
+    <g id="i-banner-person"><circle cx="15" cy="9" r="6" fill="#e8c04a"/><path d="M4 28c0-7 5-11 11-11s11 4 11 11z" fill="#e8c04a"/><circle cx="15" cy="9" r="6" fill="none" stroke="#b98d20"/><path d="M4 28c0-7 5-11 11-11s11 4 11 11z" fill="none" stroke="#b98d20"/></g>
+    <g id="i-banner-mail"><path d="M4 8h18l4 4v14H4z" fill="#fff" stroke="#99a"/><rect x="2" y="14" width="16" height="11" rx="1" fill="#c8402e"/><path d="M2 15 10 21 18 15" fill="none" stroke="#fff" stroke-width="1.4"/></g>
+    <g id="i-run"><circle cx="11" cy="11" r="9.5" fill="#2fa63a"/><path d="M8.5 6.5v9l7-4.5z" fill="#fff"/></g>
+  </defs>
+</svg>
+
+<div id="fit">
+  <div id="app">
+
+    <!-- ======================= APP CHROME ======================= -->
+    <div class="xtitle">
+      <svg class="cherry" viewBox="0 0 16 16"><use href="#i-cherry"/></svg>
+      <span class="xt-txt">Survey Manager Software V2.39c&nbsp;&nbsp;&nbsp;Sandra Webb&nbsp;&nbsp;(TTL-00079)&nbsp;&nbsp;1.0.6466.19619 32bit</span>
+      <span class="xt-btns"><span class="xb">&#8211;</span><span class="xb">&#9633;</span><span class="xb close">&#10005;</span></span>
+    </div>
+    <div class="xmenu">
+      <span>Defaults</span><span>Lookups</span><span>Tools</span><span>Reports</span><span>Windows</span><span>Help</span>
+    </div>
+    <div class="xtools">
+      <span class="xtb"><svg viewBox="0 0 22 22"><use href="#i-people"/></svg>Contacts</span>
+      <span class="xtb"><svg viewBox="0 0 22 22"><use href="#i-calc"/></svg>Estimates</span>
+      <span class="xtb"><svg viewBox="0 0 22 22"><use href="#i-person"/></svg>Jobs</span>
+      <span class="xtb"><svg viewBox="0 0 22 22"><use href="#i-invoice"/></svg>Invoices</span>
+      <span class="xtb"><svg viewBox="0 0 22 22"><use href="#i-cal"/></svg>Schedule</span>
+      <span class="xtb notif" id="btnNotif"><svg viewBox="0 0 22 22"><use href="#i-mail"/></svg><span id="notifTxt">Notifications (0)</span></span>
+      <span class="xtb runbtn" id="btnRunAgent"><svg viewBox="0 0 22 22"><use href="#i-run"/></svg><span id="runTxt">Run AI Agent</span></span>
+    </div>
+
+    <div class="mdi">
+      <!-- The AI layer we add to Cherries: a live, auditable record of what the agent is doing. -->
+      <div id="agentBar">
+        <div class="ab-tag">AI AGENT</div>
+        <div class="ab-body">
+          <div class="ab-now" id="abNow">Idle &mdash; press <b>Run AI Agent</b></div>
+        </div>
+        <div class="ab-ref" id="abRef"></div>
+      </div>
+
+      <!-- ======================= JOBS WINDOW ======================= -->
+      <section class="win" id="winJobs">
+        <div class="win-t">
+          <svg class="wt-ico" viewBox="0 0 22 22"><use href="#i-person"/></svg>
+          <span class="wt-txt">Jobs</span>
+          <span class="wt-btns"><span class="wb">&#8211;</span><span class="wb">&#9633;</span><span class="wb close">&#10005;</span></span>
+        </div>
+        <div class="win-banner">
+          <svg class="wb-ico" viewBox="0 0 30 30"><use href="#i-banner-person"/></svg>
+          <div class="wb-txt">Select a job to amend then click 'Amend' or click 'Add job' to create a new job record. Double click a job to amend. Double click column header to sort. Select the 'Archive'<br>tab to see archived jobs. Select the 'TODO' tab to see jobs requiring attention. Use the search fields to search for jobs.</div>
+          <div class="wb-right">
+            <span class="mini-btn"><svg width="13" height="13" viewBox="0 0 18 18"><use href="#i-btn-lock"/></svg>Lock</span>
+            <span class="mini-btn"><svg width="13" height="13" viewBox="0 0 18 18"><use href="#i-btn-reset"/></svg>Reset</span>
+          </div>
+        </div>
+        <div class="search-row">
+          <span class="sf"><label>Job ID</label><input></span>
+          <span class="sf"><label>Site ID</label><input></span>
+          <span class="sf"><label>Client</label><input></span>
+          <span class="sf"><label>Site</label><input></span>
+          <span class="sf"><label>Service</label><select><option>All Services</option><option>Asbestos Survey</option><option>Asbestos Analytical</option><option>Legionella</option><option>Geotechnical</option></select></span>
+          <span class="sf"><label>Division</label><select><option>All</option><option>Refurbishment</option><option>Management</option><option>Re-Inspection</option></select></span>
+          <span class="sf"><label>Surveyor</label><select><option>All Surveyors</option><option>Neil Barratt</option><option>Craig Sutton</option><option>Owen Pryce</option><option>Ross Fenwick</option></select></span>
+          <span class="sf"><label>Project Manager</label><select><option>All</option><option>Julie Harker</option><option>Sonia Bexley</option><option>Mark Ridley</option></select></span>
+          <span class="search-btns">
+            <span class="mini-btn">&#128269; Search</span>
+            <span class="mini-btn">&#128269; Open</span>
+            <span class="mini-btn"><svg width="12" height="12" viewBox="0 0 18 18"><use href="#i-btn-reset"/></svg>Clear</span>
+          </span>
+        </div>
+        <div class="jtabs">
+          <span class="jtab"><svg viewBox="0 0 16 16"><use href="#i-tabfold"/></svg>Live Jobs</span>
+          <span class="jtab on"><svg viewBox="0 0 16 16"><use href="#i-tablist"/></svg>To Do List</span>
+          <span class="jtab"><svg viewBox="0 0 16 16"><use href="#i-tabdoc"/></svg>Proforma</span>
+          <span class="jtab"><svg viewBox="0 0 16 16"><use href="#i-tabbeaker"/></svg>Soak Tests</span>
+          <span class="jtab"><svg viewBox="0 0 16 16"><use href="#i-tabmsg"/></svg>Sent</span>
+          <span class="jtab"><svg viewBox="0 0 16 16"><use href="#i-tabfold"/></svg>Archived Jobs</span>
+          <span class="jtab"><svg viewBox="0 0 16 16"><use href="#i-tabpencil"/></svg>Leads</span>
+          <span class="jtab"><svg viewBox="0 0 16 16"><use href="#i-tabglobe"/></svg>ReInspections</span>
+        </div>
+        <div class="grid-wrap">
+          <table class="grid">
+            <colgroup>
+              <col style="width:60px"><col style="width:28px"><col style="width:22px"><col style="width:22px">
+              <col style="width:138px"><col style="width:118px"><col style="width:138px">
+              <col style="width:22px"><col style="width:22px"><col style="width:22px"><col style="width:22px"><col style="width:22px">
+              <col style="width:116px"><col style="width:56px"><col style="width:70px"><col style="width:112px">
+              <col style="width:92px"><col style="width:80px"><col style="width:88px"><col style="width:96px">
+              <col style="width:90px"><col style="width:112px"><col style="width:56px">
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Reference</th><th>Docs</th><th>Est</th><th>Log</th><th>Client</th><th>Scheme</th><th>Address</th>
+                <th class="c-chk">CD</th><th class="c-chk">D</th><th class="c-chk">P</th><th class="c-chk">C</th><th class="c-chk">S</th>
+                <th>Site</th><th>Post Code</th><th>Area</th><th>Survey Type</th><th>Surveyor</th><th>PM</th>
+                <th>Data Checked By</th><th>Ukas Checked By</th><th id="thDate">Date</th><th>Status</th><th>Value</th>
+              </tr>
+            </thead>
+            <tbody id="gridBody"><!-- rows injected by demo.js --></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ======================= JOB WINDOW ======================= -->
+      <section class="win hidden" id="winJob">
+        <div class="win-t">
+          <svg class="wt-ico" viewBox="0 0 16 16"><use href="#i-cherry"/></svg>
+          <span class="wt-txt" id="jobTitle">Refurbishment Asbestos Survey J316332&nbsp; - &nbsp;Ongo Homes (I)&nbsp; - &nbsp;Status Is 'Survey Report Received'&nbsp; Job last uploaded at 07:58:41 on 28/11/2025</span>
+          <span class="wt-btns"><span class="wb">&#8211;</span><span class="wb">&#9633;</span><span class="wb close" id="jobClose">&#10005;</span></span>
+        </div>
+        <div class="win-banner">
+          <svg class="wb-ico" viewBox="0 0 30 30"><use href="#i-banner-person"/></svg>
+          <div class="wb-txt">Enter the details for this Job then click 'Save' or 'Discard'. Fields marked with a * are mandatory. Once survey is created the Job details cannot be amended unless the survey<br>is deleted.</div>
+          <div class="wb-right">
+            <div class="wb-checks">
+              <span class="wchk on"><i></i>Drawings</span>
+              <span class="wchk on"><i></i>Photos</span>
+              <span class="wchk on"><i></i>Certs</span>
+            </div>
+            <div class="lockreset">
+              <span class="mini-btn"><svg width="13" height="13" viewBox="0 0 18 18"><use href="#i-btn-lock"/></svg>Lock</span>
+              <span class="mini-btn"><svg width="13" height="13" viewBox="0 0 18 18"><use href="#i-btn-reset"/></svg>Reset</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="job-body">
+          <!-- left panel -->
+          <div class="jleft">
+            <div class="jl-row"><label>Client</label><div class="jl-v"><div class="jl-inp ro" id="hClient">Ongo Homes</div></div></div>
+            <div class="jl-row"><label>Address</label><div class="jl-v"><div class="jl-inp ro multi" id="hClientAddr">Ongo House, High Street,<br>Scunthorpe, DN15 6NL</div></div></div>
+            <div class="jl-row"><label>Contact</label><div class="jl-v jl-two"><div class="jl-inp" id="hContact">Repairs Team</div><div class="jl-inp tel" id="hTel">01724 279900</div></div></div>
+            <div class="jl-row"><label>Mobile</label><div class="jl-v jl-two"><div class="jl-inp"></div><div class="jl-inp tel"></div></div></div>
+            <div class="jl-row"><label>Email</label><div class="jl-v"><div class="jl-inp" id="hEmail">asbestos@ongo.co.uk</div></div></div>
+            <div class="jl-sep"></div>
+            <div class="jl-row"><label>Site</label><div class="jl-v"><div class="jl-inp ro" id="hSite">Ongo Homes</div></div></div>
+            <div class="jl-row"><label>Address</label><div class="jl-v"><div class="jl-inp ro multi" id="hSiteAddr">(4231) 45 Jeffrey Lane,<br>Brumby,<br>Scunthorpe, DN16 2AL</div></div></div>
+            <div class="jl-row"><label>Contact</label><div class="jl-v jl-two"><div class="jl-inp">Tenant</div><div class="jl-inp tel">07500 000000</div></div></div>
+            <div class="jl-row"><label>Cust Ref</label><div class="jl-v"><div class="jl-inp" id="hCustRef">2519917</div></div></div>
+            <div class="jl-row"><label>Alt Ref</label><div class="jl-v"><div class="jl-inp"></div></div></div>
+            <div class="jl-chkrow">
+              <span>Priority Assessment</span><span class="wchk on"><i></i></span>
+              <span>Material Assessment</span><span class="wchk on"><i></i></span>
+            </div>
+            <div class="jl-row"><label>Date</label><div class="jl-v jl-two"><div class="jl-dd" data-dd="ampm" style="width:44px;flex:none">AM<span class="dd-a">&#9660;</span></div><div class="jl-inp" style="flex:1">28/11/2025 09:00</div></div></div>
+            <div class="jl-row"><label>Surveyor 1</label><div class="jl-v"><div class="jl-dd" data-dd="surveyor" id="hSurv1">Neil Barratt<span class="dd-a">&#9660;</span></div></div></div>
+            <div class="jl-row"><label>Surveyor 2</label><div class="jl-v"><div class="jl-dd" data-dd="surveyor">Not Selected<span class="dd-a">&#9660;</span></div></div></div>
+            <div class="jl-row"><label>Proj Manager</label><div class="jl-v"><div class="jl-dd" data-dd="pm" id="hPM">Julie Harker<span class="dd-a">&#9660;</span></div></div></div>
+            <div class="jl-sep"></div><div class="jl-sep"></div>
+            <div class="jl-row"><label>Data Checker</label><div class="jl-v"><div class="jl-dd" data-dd="dataChecker" id="ddDataChecker">Paul Rigby<span class="dd-a">&#9660;</span></div></div></div>
+            <div class="jl-row"><label>UKAS Checker</label><div class="jl-v"><div class="jl-dd" data-dd="ukasChecker" id="ddUkasChecker">Martin Ford<span class="dd-a">&#9660;</span></div></div></div>
+            <div class="jl-chkrow" style="justify-content:flex-end"><span class="wchk" id="chkDone"><i></i>Done</span></div>
+          </div>
+
+          <!-- right: tabs + content -->
+          <div class="jright">
+            <div class="jtabrow">
+              <span class="jt on" id="tabAsbestos"><svg viewBox="0 0 16 16"><use href="#i-tabglobe"/></svg>Asbestos</span>
+              <span class="jt" id="tabText"><svg viewBox="0 0 16 16"><use href="#i-tabdoc"/></svg>Text</span>
+              <span class="jt" id="tabInstructions"><svg viewBox="0 0 16 16"><use href="#i-tabq"/></svg>Instructions</span>
+              <span class="jt" id="tabDrawing"><svg viewBox="0 0 16 16"><use href="#i-tabpencil"/></svg>Drawing</span>
+              <span class="jt" id="tabSurvey"><svg viewBox="0 0 16 16"><use href="#i-tabdoc"/></svg>Survey</span>
+              <span class="jt" id="tabInv"><svg viewBox="0 0 16 16"><use href="#i-tablist"/></svg>Inv</span>
+              <span class="jt" id="tabMessages"><svg viewBox="0 0 16 16"><use href="#i-tabmsg"/></svg>Messages</span>
+              <span class="jt" id="tabCorrespondence"><svg viewBox="0 0 16 16"><use href="#i-tabcorr"/></svg>Correspondence</span>
+            </div>
+            <div class="jsubrow" id="subrowAsb">
+              <span class="jst on" id="stAssessments"><svg viewBox="0 0 16 16"><use href="#i-tablist"/></svg>Assessments</span>
+              <span class="jst" id="stNoAccess"><svg viewBox="0 0 16 16"><use href="#i-tabwarn"/></svg>Previous/No Access</span>
+              <span class="jst" id="stSoak"><svg viewBox="0 0 16 16"><use href="#i-tabbeaker"/></svg>Soak Testable Assessments</span>
+              <span class="jst" id="stQuest"><svg viewBox="0 0 16 16"><use href="#i-tabq"/></svg>Questionnaire</span>
+              <span class="jst" id="stSiteInfo"><svg viewBox="0 0 16 16"><use href="#i-tabhouse"/></svg>Site Info</span>
+            </div>
+            <div class="jsubrow hidden" id="subrowText">
+              <span class="jst on" id="stScope"><svg viewBox="0 0 16 16"><use href="#i-tabq"/></svg>Scope</span>
+              <span class="jst" id="stMethod"><svg viewBox="0 0 16 16"><use href="#i-tabwarn"/></svg>Method</span>
+              <span class="jst"><svg viewBox="0 0 16 16"><use href="#i-tabglobe"/></svg>Type</span>
+              <span class="jst"><svg viewBox="0 0 16 16"><use href="#i-tabpencil"/></svg>Variation</span>
+            </div>
+
+            <div class="jcontent">
+              <!-- Scope -->
+              <div class="jpanel hidden" id="panScope">
+                <div class="scope-pane">
+                  <div class="scope-hd"><span>Scope</span><span class="r"><span class="wchk"><i></i></span>&nbsp;Use Instead of Scheme Surveyor Instructions</span></div>
+                  <div class="scope-box">
+                    <p>This is a report on a pre-refurbishment survey.</p>
+                    <p>The Control of Asbestos Regulations 2012 creates an explicit 'Duty' to manage asbestos in non domestic properties. The scope of this report is to give advice to the duty holder on how they should manage asbestos within this premises.</p>
+                    <p>The purpose of this report is to record the location, the extent, the product type and the type of asbestos located along with the means of identification on the date of the survey for all ACM's within the premises.</p>
+                    <p>The aim of this survey report is to carry out individual risk assessments for each identified occurrence of asbestos containing material.</p>
+                    <p>The main objective of this survey report is to present all of the information collated during the site survey that the duty holder may need to compile an asbestos management plan and in doing so enable the duty holder to comply with Regulation 4 &ndash; The Duty to Manage Asbestos in non domestic premises.</p>
+                    <p id="scopeLast">This is a refurbishment survey around the areas of the kitchin, bathroom and roof line.</p>
+                  </div>
+                  <div class="excl-hd">Agreed Exclusions</div>
+                  <div class="excl-box">N/A</div>
+                </div>
+              </div>
+
+
+              <!-- Method (MQP121 appendix: legacy 'Assisi Environmental' must read 'The Testing Lab Ltd') -->
+              <div class="jpanel hidden" id="panMethod">
+                <div class="scope-pane">
+                  <div class="scope-hd"><span>Method</span><span class="r"><span class="wchk"><i></i></span>&nbsp;Use Standard Method Statement</span></div>
+                  <div class="scope-box">
+                    <p>The survey was undertaken in general accordance with HSG264 &lsquo;Asbestos: The Survey Guide&rsquo; and the requirements of the Control of Asbestos Regulations 2012.</p>
+                    <p>Samples were analysed by transmitted/polarised light microscopy with centre stop dispersion staining in accordance with HSG248.</p>
+                    <p id="methodLast">All sampling and analysis was carried out by Assisi Environmental under its UKAS accreditation, and the results are reported on the pages that follow.</p>
+                  </div>
+                  <div class="excl-hd">Deviations</div>
+                  <div class="excl-box">N/A</div>
+                </div>
+              </div>
+
+              <!-- Site info -->
+              <div class="jpanel hidden" id="panSiteInfo">
+                <div class="site-pane">
+                  <div class="site-box">
+                    <p id="siteP1">The current use of the building is a dwelling and prior to this it was the same. The current occupants have been in the building since various and there is no previously known asbestoes within the premises.</p>
+                    <p>The building was constructed in circa 1960s and has 2 floors. The general construction to the main roof is concrete tile on timber, external walls are brick/blockwork plastered internally, the ground floor is made out of concrete, upper floors are timber, internal partitions are constructed out of a mixture of timber stud and block with plaster, the windows and doors are generally mixed timber and upvc and the rain water goods are mixed plastic and metal. The area depicted upon the enclosed drawing is where the survey took place and as such all other areas not shown on the drawing are excluded from this survey.</p>
+                    <p>Additional notes:-<br>Kitchen, bathroom and roof line surveyed only as per scope.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Assessments -->
+              <div class="jpanel" id="panAssessments">
+                <div class="asm">
+                  <div class="asm-list">
+                    <div class="asm-lh"><span class="n">Ref</span><span class="c">Component</span></div>
+                    <div class="asm-rows" id="asmRows"><!-- injected --></div>
+                  </div>
+                  <div class="asm-form">
+                    <div class="af-fields" id="afFields"><!-- injected --></div>
+                    <div class="asm-photo">
+                      <div class="ph-box"><img id="phImg" src="assets/photo_s005.png" alt=""><span class="ph-ts" id="phTs">28-11-2025, 09:57:07</span></div>
+                      <div class="ph-btns">
+                        <span class="mini-btn">View Image</span>
+                        <span class="mini-btn" id="btnRotate">Rotate</span>
+                        <span class="mini-btn">Poor Exposure</span>
+                        <span class="mini-btn" id="btnViewCert">View Cert</span>
+                      </div>
+                      <div class="mra-box" id="mraBox">
+                        <div class="mr"><span>Material Risk Assessment</span><b id="mraScore">&ndash;</b></div>
+                        <div class="mr"><span>Priority Risk</span><b id="priScore">&ndash;</b></div>
+                        <div class="mr"><span>Work Area</span><b id="workArea">Yes</b></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Drawing -->
+              <div class="jpanel hidden" id="panDrawing">
+                <div class="drw-pane">
+                  <div class="drw-hd"><span>J316332 &ndash; GA Drawing &ndash; Ground.jpg</span><span class="r">Returned: 29/11/2025 06:12 (China Drawings) &nbsp;&middot;&nbsp; TCW on file</span></div>
+                  <div class="drw-sheet">
+                    <span class="drw-flr">Ground</span>
+                    <div class="drw-fit">
+                      <div class="drw-imgwrap">
+                        <img src="assets/drawing_s002.png" alt="">
+                        <span class="drw-anchor" id="drwAliving" style="left:44%;top:34%"></span>
+                        <span class="drw-anchor" id="drwAkitchen" style="left:78%;top:34%"></span>
+                        <span class="drw-anchor" id="drwAhall" style="left:61%;top:50%"></span>
+                        <span class="drw-anchor" id="drwAext" style="left:61%;top:70%"></span>
+                        <!-- positives marked up in red per MQP121 s3.10.2 — the ACM's extent, not just a label -->
+                        <!-- S003: floor tiles & bitumen, 8 sqm — an area of the kitchen floor -->
+                        <div class="drw-mark" id="drwS003" style="left:67%;top:42%;width:14.5%;height:14%">
+                          <span class="drw-lbl">S003</span></div>
+                        <!-- S009: cement flue, 1.5 lin m — runs UP THE WALL, so it sits against it -->
+                        <div class="drw-mark flue" id="drwS009" style="left:86.5%;top:30%;width:3.2%;height:14%">
+                          <span class="drw-lbl out">S009</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Messages -->
+              <div class="jpanel hidden" id="panMessages">
+                <div class="msg-pane">
+                  <div class="msg-grid">
+                    <table class="mg">
+                      <colgroup><col style="width:40px"><col style="width:52px"><col style="width:72px"><col style="width:150px"><col style="width:220px"><col></colgroup>
+                      <thead><tr><th>Type</th><th>Counter</th><th>Sent</th><th>From</th><th>To</th><th>Subject</th></tr></thead>
+                      <tbody id="mgBody"></tbody>
+                    </table>
+                  </div>
+                  <div class="msg-meta">
+                    <span>Subject</span><span class="mm" id="mmSubject" style="flex:1"></span>
+                    <span>Type</span><span class="mm" id="mmType" style="width:34px"></span>
+                    <span>Counter</span><span class="mm" style="width:28px">1</span>
+                  </div>
+                  <div class="msg-body" id="msgBody"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- bottom rail -->
+            <div class="jrail">
+              <span class="rb" id="btnRaiseQuery"><svg viewBox="0 0 18 18"><use href="#i-btn-q"/></svg>Raise<br>Query</span>
+              <span class="rb" id="btnDataCheck"><svg viewBox="0 0 18 18"><use href="#i-btn-chk"/></svg>Data<br>Check</span>
+              <span class="sp"></span>
+              <span class="rb" id="btnUkas"><svg viewBox="0 0 18 18"><use href="#i-btn-ukas"/></svg>UKAS<br>Check</span>
+              <span class="rb" id="btnGenSurvey"><svg viewBox="0 0 18 18"><use href="#i-btn-gear"/></svg>Generate<br>Survey</span>
+              <span class="rb" id="btnSendSurveyor"><svg viewBox="0 0 18 18"><use href="#i-btn-env"/></svg>Send to<br>Surveyor</span>
+              <span class="rb" id="btnSurveyorCheck"><svg viewBox="0 0 18 18"><use href="#i-btn-ukas"/></svg>Surveyor<br>Check</span>
+              <span class="rb" id="btnSendInvoice"><svg viewBox="0 0 18 18"><use href="#i-btn-env"/></svg>Send Invoice<br>to Client</span>
+              <span class="rb" id="btnDiscard"><svg viewBox="0 0 18 18"><use href="#i-btn-disc"/></svg>Discard</span>
+              <span class="rb" id="btnSave"><svg viewBox="0 0 18 18"><use href="#i-btn-save"/></svg>Save</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= CONFIRM MESSAGE BOX ======================= -->
+      <section class="win hidden" id="dlgConfirm">
+        <div class="win-t">
+          <span class="wt-txt" style="text-align:center">Survey Manager Software</span>
+          <span class="wt-btns"><span class="wb close">&#10005;</span></span>
+        </div>
+        <div class="confirm-body">
+          <span class="cf-ico">?</span>
+          <div class="cf-msg" id="cfMsg">This job has 1 unresolved query.<br>Send the query to the surveyor now?</div>
+        </div>
+        <div class="confirm-foot">
+          <span class="mini-btn" id="btnConfirmYes">Yes</span>
+          <span class="mini-btn" id="btnConfirmNo">No</span>
+        </div>
+      </section>
+
+      <!-- ======================= CERT WINDOW ======================= -->
+      <section class="win hidden" id="winCert">
+        <div class="win-t">
+          <svg class="wt-ico" viewBox="0 0 16 16"><use href="#i-tabdoc"/></svg>
+          <span class="wt-txt">Bulk Certificate &ndash; J316332 &ndash; BulkCert.pdf</span>
+          <span class="wt-btns"><span class="wb">&#8211;</span><span class="wb">&#9633;</span><span class="wb close" id="certClose">&#10005;</span></span>
+        </div>
+        <div class="cert-body">
+          <div class="cert-page">
+            <div class="ch">
+              <img src="assets/logo_ttl.png" alt="The Testing Lab">
+              <div class="ukas">UKAS<br>TESTING<br>7758</div>
+            </div>
+            <h3>Certificate of Bulk Analysis &ndash; J316332</h3>
+            <div class="meta">
+              Client: Ongo Homes &nbsp;&middot;&nbsp; Site: 45 Jeffrey Lane, Brumby, Scunthorpe, DN16 2AL<br>
+              Samples received: 28/11/2025 &nbsp;&middot;&nbsp; Analysed: 01/12/2025 &nbsp;&middot;&nbsp; Method: Transmitted/polarised light microscopy &amp; centre stop dispersion staining (HSG248)
+            </div>
+            <table class="cert">
+              <thead><tr><th style="width:64px">Sample</th><th>Description</th><th style="width:190px">Result</th></tr></thead>
+              <tbody id="certBody">
+                <tr><td>S001</td><td>Textured coating &ndash; hallway ceiling</td><td>No Asbestos Detected</td></tr>
+                <tr><td>S003</td><td>Floor tile &amp; bitumen &ndash; kitchen</td><td>Chrysotile</td></tr>
+                <tr id="certS005"><td>S005</td><td>Textured coating &ndash; living room ceiling</td><td>No Asbestos Detected</td></tr>
+                <tr><td>S009</td><td>Cement flue &ndash; kitchen</td><td>Chrysotile</td></tr>
+                <tr><td>S010</td><td>Textured coating &ndash; landing ceiling</td><td>No Asbestos Detected</td></tr>
+                <tr id="certS013"><td>S013</td><td>Textured coating &ndash; bathroom ceiling</td><td>No Asbestos Detected</td></tr>
+                <tr id="certS018"><td>S018</td><td>Roofing felt &ndash; front extension</td><td>No Asbestos Detected</td></tr>
+              </tbody>
+            </table>
+            <div class="cert-sig">
+              <span>Analyst: J. Ramsden</span>
+              <span>Countersigned: K. Atkinson</span>
+              <span>The Testing Lab PLC, Unit 4 James Road, Adwick le Street, Doncaster</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= QUERIES / REJECTIONS DIALOG ======================= -->
+      <section class="win hidden" id="dlgQuery">
+        <div class="win-t">
+          <span class="wt-txt" style="text-align:center">Queries / Rejections</span>
+          <span class="wt-btns"><span class="wb">&#8211;</span><span class="wb">&#9633;</span><span class="wb close">&#10005;</span></span>
+        </div>
+        <div class="dlg-banner">
+          <svg class="wb-ico" viewBox="0 0 30 30"><use href="#i-banner-mail"/></svg>
+          <b>Enter the details for this Rejection then click 'Save' to save your changes or 'Discard' to discard them.</b>
+          <div class="wb-right">
+            <span class="mini-btn"><svg width="13" height="13" viewBox="0 0 18 18"><use href="#i-btn-lock"/></svg>Lock</span>
+            <span class="mini-btn"><svg width="13" height="13" viewBox="0 0 18 18"><use href="#i-btn-reset"/></svg>Reset</span>
+          </div>
+        </div>
+        <div class="dlg-body">
+          <div class="q-grid">
+            <table class="qg">
+              <colgroup><col style="width:52px"><col style="width:26px"><col style="width:110px"><col><col style="width:110px"></colgroup>
+              <thead><tr><th>Type</th><th>C</th><th>Date Time</th><th>Query Text</th><th>Reply Text</th></tr></thead>
+              <tbody id="qgBody"></tbody>
+            </table>
+          </div>
+          <div class="q-btnrow">
+            <span class="mini-btn" id="btnAddRejection">Add Data Check Rejection&nbsp;<svg width="14" height="14" viewBox="0 0 18 18"><use href="#i-btn-plus"/></svg></span>
+            <span class="right mini-btn">Delete&nbsp;<svg width="14" height="14" viewBox="0 0 18 18"><use href="#i-btn-x"/></svg></span>
+          </div>
+          <div class="q-lbl">Query</div>
+          <div class="q-text" id="qText"></div>
+          <div class="q-resp-lbl">Response&nbsp;&nbsp;<span class="none" id="qRespNone">(None Received)</span></div>
+          <div class="q-resp" id="qResp"></div>
+        </div>
+        <div class="dlg-foot">
+          <span class="right mini-btn" id="btnQueryOk" style="padding:4px 14px">Ok&nbsp;<svg width="16" height="16" viewBox="0 0 18 18"><use href="#i-btn-save"/></svg></span>
+        </div>
+      </section>
+
+      <!-- ======================= REPORT VIEWER ======================= -->
+      <section class="hidden" id="winReport" style="position:absolute">
+        <div class="rv-t">
+          <span>&#128462;&nbsp; J316332 &ndash; Refurbishment Asbestos Survey &ndash; Ongo Homes.pdf</span>
+          <span class="rv-btns"><span>&#8211;</span><span>&#9633;</span><span class="close" id="reportClose">&#10005;</span></span>
+        </div>
+        <div class="rv-tools"><span>&#8962;</span><span>Page <b id="rvPage">1</b> / 4</span><span>&#8722;&nbsp;&nbsp;100%&nbsp;&nbsp;&#43;</span><span>&#128269;</span><span>&#128424;</span></div>
+        <div class="rv-body">
+          <div class="rv-scroll" id="rvScroll">
+            <div class="rv-cover">
+              <div class="rvc-head">
+                <img class="rvc-logo" src="assets/logo_ttl.png" alt="The Testing Lab">
+                <div class="rvc-ukas"><span class="rvc-crown">&#9819;</span>UKAS<br>INSPECTION<div class="rvc-num">7758</div></div>
+              </div>
+              <div class="rvc-mid">
+                <div class="rvc-photo"><img src="assets/photo_s018.png" alt=""></div>
+                <div class="rvc-links">
+                  <div class="rvc-ql">Quick Links</div>
+                  <div>&#9658; <u>ACMS</u></div>
+                  <div>&#9658; <u>Non Suspect/NADIS</u></div>
+                  <div>&#9658; <u>No Access</u></div>
+                </div>
+              </div>
+              <div class="rvc-title">Asbestos Survey Report 28/11/2025</div>
+              <div class="rvc-sub">Refurbishment Asbestos Survey</div>
+              <div class="rvc-for">For Ongo Homes</div>
+              <div class="rvc-job">J316332<br>UPRN: 4231<br>45 Jeffrey Lane<br>Brumby<br>Scunthorpe<br>DN16 2AL</div>
+              <div class="rvc-sec">Scope, Purpose, Aims &amp; Objectives</div>
+              <div class="rvc-body">This is a report on a pre-refurbishment survey.<br><br>
+                The Control of Asbestos Regulations 2012 creates an explicit &lsquo;Duty&rsquo; to manage asbestos in non domestic properties. The scope of this report is to give advice to the duty holder on how they should manage asbestos within this premises.<br><br>
+                The purpose of this report is to record the location, the extent, the product type and the type of asbestos located along with the means of identification on the date of the survey for all ACM&rsquo;s within the premises.<br><br>
+                This is a refurbishment survey around the areas of the kitchen, bathroom and roof line.</div>
+              <div class="rvc-foot"><span>MQF3177a Issue 8 03/2024</span><span>J316332 - Page 1 of 25</span></div>
+            </div>
+            <img src="assets/report_page_s005.jpeg" alt="">
+            <img src="assets/report_page_s013.jpeg" alt="">
+            <img src="assets/report_page_s018.jpeg" alt="">
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /mdi -->
+  </div><!-- /app -->
+
+  <!-- cursor + presenter pip -->
+  <div id="cursor">
+    <span class="ripple"></span>
+    <svg width="17" height="24" viewBox="0 0 17 24"><path d="M1.2 1 L1.2 18.6 L5.6 14.8 L8.4 21.4 L11.2 20.2 L8.4 13.7 L14.6 13.7 Z" fill="#fff" stroke="#000" stroke-width="1.1" stroke-linejoin="round"/></svg>
+  </div>
+  <div id="pip">&#9654; 1/8</div>
+</div>
+
+<script src="demo.js?v=20260715101829" defer></script>
+</body>
+</html>
